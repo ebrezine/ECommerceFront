@@ -39,11 +39,23 @@ export class ProductCardComponent implements OnInit{
 
     console.log(this.counter(this.productInfo.quantity));
   }
-
+  
   addToCart(product: Product, quantity: number): void {
-
     quantity = Number(quantity);
     let inCart = false;
+    let total = this.productInfo.quantity - quantity;
+
+    this.productInfo.quantity -= quantity;
+
+    if (this.productInfo.quantity == 0){
+      this.selectQuantity = 0;
+    }
+
+    if (total < 0){
+      this.productInfo.quantity += quantity
+      quantity = 0;
+      this.selectQuantity = 1;
+    }
 
     this.products.forEach(
       (element) => {
