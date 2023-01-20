@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
-
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -29,6 +28,11 @@ export class CartComponent implements OnInit {
         this.totalPrice = cart.totalPrice;
       }
     );
+  }
+  
+  removeItem(item: number): void {
+    this.totalPrice = this.productService.removeItem(item);
+    this.router.navigate(['/cart']);
   }
 
   emptyCart(): void {

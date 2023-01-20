@@ -32,9 +32,24 @@ export class ProductService {
     return this._cart$;
   }
 
+  removeItem(id: number): number{
+    for(let i = 0; i < this._cart.value.products.length; i++){
+      if(this._cart.value.products[i].product.id == id){
+        this._cart.value.totalPrice -= (this._cart.value.products[i].product.price);
+        this._cart.value.cartCount-= (this._cart.value.products[i].quantity);
+        this._cart.value.products.splice(i, 1);
+        break;
+      }
+    }
+    return this._cart.value.totalPrice;
+  }
+
   setCart(latestValue: Cart) {
     return this._cart.next(latestValue);
   }
+
+  
+
 
   constructor(private http: HttpClient) { }
 
