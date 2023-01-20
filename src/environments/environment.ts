@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   withCredentials: true,
   baseUrl: "http://localhost:8083",
+  // baseUrl: "http://18.144.30.236:8083",
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': 'http://localhost:4200',

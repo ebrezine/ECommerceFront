@@ -1,8 +1,20 @@
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
+
 <nav class="navbar navbar-light bg-light">
     <h4>
         <img src="../../../assets/images/favicon.png" width="8%" height="8%" alt="Revature">
         Revature Swag Shop
     </h4>
+    <form class="search">
+        <input type="text" name="searchQuery" id="searchQuery" placeholder="Search..." [(ngModel)]="query" (keyup)="showClose($event)">
+        <span class="material-symbols-outlined close_icon hide" (click)="clear($event)">
+            close
+        </span>
+        <button class="material-symbols-outlined search_icon" (click)="search()">
+            search
+        </button>
+    </form>
     <form class="form-inline">
         <button class="btn btn-light" [routerLink]="['/cart']">
             Cart

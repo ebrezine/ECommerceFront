@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,6 +13,8 @@ export class NavbarComponent implements OnInit{
 
   cartCount!: number;
   subscription!: Subscription;
+  @Output() newQueryEvent = new EventEmitter<String>();
+  query: String = "";
 
   constructor(private authService: AuthService, private router: Router, private productService: ProductService, route: ActivatedRoute) {
     route.params.subscribe(val => {
@@ -42,6 +44,21 @@ export class NavbarComponent implements OnInit{
   logout() {
     this.authService.logout();
     this.router.navigate(['login']);
+  }
+
+  clear(event:any){
+    this.query = "";
+    event.target.classList.add("hide");
+  }
+
+  showClose(event:any){
+    if(this.query){
+      event.target.nextElementSibling.classList.remove("hide")
+    }
+  }
+
+  search(){
+    this.newQueryEvent.emit(this.query);
   }
 
 }
