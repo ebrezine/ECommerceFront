@@ -19,6 +19,7 @@ export class ProductCardComponent implements OnInit{
   totalPrice: number = 0;
 
   @Input() productInfo!: Product;
+  counter = Array;
 
   constructor(private productService: ProductService) { }
   
@@ -30,6 +31,8 @@ export class ProductCardComponent implements OnInit{
         this.totalPrice = cart.totalPrice;
       }
     );
+
+    console.log(this.counter(this.productInfo.quantity));
   }
 
   addToCart(product: Product): void {
