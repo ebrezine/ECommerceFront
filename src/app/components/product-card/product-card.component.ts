@@ -18,6 +18,7 @@ export class ProductCardComponent implements OnInit{
   subscription!: Subscription;
   totalPrice: number = 0;
   selectQuantity: number = 1;
+  inCart: boolean = false;
 
   @Input() productInfo!: Product;
   counter = Array;
@@ -32,17 +33,20 @@ export class ProductCardComponent implements OnInit{
         this.totalPrice = cart.totalPrice;
       }
     );
-    
+
+    for (let i = 0; i < this.products.length; i++){
+      if (this.products[i].product.name == this.productInfo.name){
+        this.productInfo.quantity -= this.products[i].quantity;
+        this.inCart = true;
+      }
+    }
     if (this.productInfo.quantity == 0){
       this.selectQuantity = 0;
     }
-
-    console.log(this.counter(this.productInfo.quantity));
   }
   
   addToCart(product: Product, quantity: number): void {
     quantity = Number(quantity);
-    let inCart = false;
     let total = this.productInfo.quantity - quantity;
 
     this.productInfo.quantity -= quantity;
@@ -59,10 +63,7 @@ export class ProductCardComponent implements OnInit{
 
     this.products.forEach(
       (element) => {
-        console.log("TESTING")
-        console.log(element)
-        console.log(quantity)
-        if(element.product == product){
+        if(element.product.name == product.name){
           element.quantity += quantity;
           let cart = {
             cartCount: this.cartCount + quantity,
@@ -70,7 +71,7 @@ export class ProductCardComponent implements OnInit{
             totalPrice: this.totalPrice + product.price
           };
           this.productService.setCart(cart);
-          inCart=true;
+          this.inCart=true;
           return;
         };
       }
@@ -78,8 +79,7 @@ export class ProductCardComponent implements OnInit{
       
     );
 
-    if(inCart == false){
-      console.log(quantity)
+    if(this.inCart == false){
       let newProduct = {
         product: product,
         quantity: quantity
