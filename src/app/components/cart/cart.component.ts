@@ -32,14 +32,14 @@ export class CartComponent implements OnInit {
   
   removeItem(item: number): void {
     this.totalPrice = this.productService.removeItem(item);
-    this.router.navigate(['/cart']);
+    this.router.navigate(['/cart']); //take cart before and after, check for presence of item
   }
 
   emptyCart(): void {
     let cart = {
       cartCount: 0,
       products: [],
-      totalPrice: 0.00
+      totalPrice: 0.00 // check that these values are 0 after test
     };
     this.productService.setCart(cart);
     this.router.navigate(['/home']);
