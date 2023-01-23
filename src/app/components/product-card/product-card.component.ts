@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Product } from 'src/app/models/product';
+import { ProductDetails } from 'src/app/models/product-details';
+import { ProductDetailsService } from 'src/app/services/product-details.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -20,10 +22,18 @@ export class ProductCardComponent implements OnInit{
   selectQuantity: number = 1;
   inCart: boolean = false;
 
+
+  isDetailsOn: boolean = false;
+  detailsInfo: ProductDetails[] = [];
+
+
   @Input() productInfo!: Product;
   counter = Array;
+  
+  //static productDetailsService: ProductDetailsService;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService,
+              private productDetailsService: ProductDetailsService) { }
   
   ngOnInit(): void {
     this.subscription = this.productService.getCart().subscribe(
@@ -34,15 +44,37 @@ export class ProductCardComponent implements OnInit{
       }
     );
 
+    this.checkCart();
+    
+    this.isDetailsOn = false;
+    this.productDetailsService.getProductDetails().subscribe(
+      (resp2) => this.detailsInfo = resp2,
+      (err) => console.log(err),
+      () => console.log(this.detailsInfo)
+      
+    );
+
+  }
+
+  checkCart(){
+
     for (let i = 0; i < this.products.length; i++){
       if (this.products[i].product.name == this.productInfo.name){
         this.productInfo.quantity -= this.products[i].quantity;
         this.inCart = true;
       }
     }
+
+
     if (this.productInfo.quantity == 0){
       this.selectQuantity = 0;
     }
+
+
+    if (this.productInfo.quantity == 0){
+      this.selectQuantity = 0;
+    }
+
   }
   
   addToCart(product: Product, quantity: number): void {
@@ -68,7 +100,7 @@ export class ProductCardComponent implements OnInit{
           let cart = {
             cartCount: this.cartCount + quantity,
             products: this.products,
-            totalPrice: this.totalPrice + product.price
+            totalPrice: this.totalPrice + product.price*quantity
           };
           this.productService.setCart(cart);
           this.inCart=true;
@@ -88,13 +120,23 @@ export class ProductCardComponent implements OnInit{
       let cart = {
         cartCount: this.cartCount + quantity,
         products: this.products,
-        totalPrice: this.totalPrice + product.price
+        totalPrice: this.totalPrice + product.price*quantity
       }
       this.productService.setCart(cart);
     }
       
   }
 
+  
+  detailsViewOn(): void {
+    this.isDetailsOn = true;      
+  }
+
+  detailsViewOff(): void {
+  this.isDetailsOn = false;
+  }
+  
+  
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

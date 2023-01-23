@@ -17,6 +17,21 @@
       <label for="inputPassword">Password</label>
       <input type="password" class="form-control" formControlName="password" id="inputPassword" placeholder="Enter Password">
     </div>
+    <label for="question">Choose a security question:</label>
+    <select #questions (change)="onSelected(questions.value)">
+      <option default>In what city were you born?</option>
+      <option>What is the name of your favorite pet?</option>
+      <option>What is your mother's maiden name?</option>
+      <option>What high school did you attend?</option>
+      <option>What was the make of your first car?</option>
+      <option>What was your favorite food as a child?</option>
+    </select>
+    <div class="form-group">
+      <label for="inputAnswer">Answer</label>
+      <input type="answer" class="form-control" formControlName="answer" id="inputAnswer" placeholder="Enter Answer">
+    </div>
     <button class="btn btn-primary" (click)="onSubmit()">Register</button>
 </form>
+
+
 
