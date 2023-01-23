@@ -22,4 +22,8 @@ describe('CartComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should be empty', () => {
+    expect(component.totalPrice).toEqual(0);
+    expect(component.cartProducts).toEqual([]);
+  });
 });
